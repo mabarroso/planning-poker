@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Poker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-container" class="container">
+        <h1>Planning Poker</h1>
+        <input type="text" id="username" placeholder="Tu nombre..." autofocus>
+        <button id="join-btn">Entrar</button>
+    </div>
+
+    <div id="game-container" class="container hidden">
+        <header>
+            <h1>Planning Poker</h1>
+            <div id="moderator-controls" class="hidden">
+                <div class="config-section">
+                    <label for="card-config">Cartas (separadas por coma):</label>
+                    <input type="text" id="card-config" value="1, 2, 4, 6, 8, 12, 14, ?, ∞">
+                    <button id="update-config-btn">Actualizar</button>
+                </div>
+                <button id="start-btn" class="primary-btn">Iniciar Planificación</button>
+                <button id="reset-btn" class="secondary-btn">Reiniciar</button>
+            </div>
+        </header>
+
+        <main>
+            <div id="status-message">Esperando al moderador...</div>
+            
+            <div id="table">
+                <!-- Los slots de los jugadores se cargarán aquí -->
+            </div>
+
+            <div id="results" class="hidden">
+                <h2>Media: <span id="average-value">-</span></h2>
+            </div>
+
+            <div id="card-picker" class="hidden">
+                <h3>Elige tu carta:</h3>
+                <div id="cards-container">
+                    <!-- Las cartas disponibles se cargarán aquí -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

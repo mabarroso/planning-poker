@@ -1,0 +1,172 @@
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg: #f8fafc;
+    --text: #1e293b;
+    --card-bg: #ffffff;
+    --card-back: #334155;
+    --card-front: #2563eb;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+input[type="text"] {
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.primary-btn {
+    background-color: var(--primary);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.secondary-btn {
+    background-color: #64748b;
+    color: white;
+    margin-left: 0.5rem;
+}
+
+#table {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: #f1f5f9;
+    border-radius: 1rem;
+}
+
+.player-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    width: 60px;
+    height: 90px;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.card.face-down {
+    background-color: var(--card-back);
+    color: transparent;
+}
+
+.card.face-up {
+    background-color: var(--card-front);
+    color: white;
+    transform: rotateY(0deg);
+}
+
+.card.voted {
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+}
+
+.player-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+#cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.selectable-card {
+    width: 50px;
+    height: 75px;
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: 0.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.selectable-card:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-5px);
+}
+
+.selectable-card.selected {
+    background: var(--primary);
+    color: white;
+}
+
+header {
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.config-section {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.config-section input {
+    margin-bottom: 0;
+    max-width: 300px;
+}
