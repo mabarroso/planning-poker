@@ -114,9 +114,22 @@ button {
     box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
 }
 
-.player-name {
-    font-size: 0.875rem;
-    font-weight: 500;
+.player-status {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+.status-voted {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-pending {
+    background-color: #fee2e2;
+    color: #991b1b;
 }
 
 #cards-container {

@@ -7,7 +7,7 @@ Una aplicación web de Planning Poker para equipos de desarrollo que permite rea
 - **Sincronización en Tiempo Real:** Comunicación fluida entre todos los programadores mediante WebSockets (Socket.io).
 - **Gestión de Moderador:** El primer usuario en conectarse es designado automáticamente como moderador.
 - **Configuración Dinámica:** El moderador puede personalizar los valores de las cartas disponibles.
-- **Interfaz Intuitiva:** Diseño limpio y moderno con visualización de participantes y estados de votación.
+- **Interfaz Intuitiva:** Diseño limpio y moderno con visualización de participantes, estados de votación (Votado/Pendiente) y cartas.
 - **Cálculo de Media:** Revelación automática de cartas y cálculo de la media aritmética de los votos numéricos.
 
 ## Tecnologías Utilizadas

@@ -98,8 +98,13 @@ socket.on('updateUsers', (users) => {
         name.textContent = user.username + (user.id === socket.id ? ' (Tú)' : '');
         if (user.id === socket.id && isModerator) name.textContent += ' [Mod]';
 
+        const status = document.createElement('div');
+        status.className = 'player-status ' + (user.hasVoted ? 'status-voted' : 'status-pending');
+        status.textContent = user.hasVoted ? 'Votado' : 'Pendiente';
+
         slot.appendChild(card);
         slot.appendChild(name);
+        slot.appendChild(status);
         table.appendChild(slot);
     });
     
