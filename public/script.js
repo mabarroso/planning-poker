@@ -16,6 +16,9 @@ const statusMessage = document.getElementById('status-message');
 const table = document.getElementById('table');
 const results = document.getElementById('results');
 const averageValueSpan = document.getElementById('average-value');
+const maxValueSpan = document.getElementById('max-value');
+const minValueSpan = document.getElementById('min-value');
+const modeValueSpan = document.getElementById('mode-value');
 const cardPicker = document.getElementById('card-picker');
 const cardsContainer = document.getElementById('cards-container');
 
@@ -232,6 +235,22 @@ function renderRevealedCards(votes) {
         const sum = numericVotes.reduce((a, b) => a + b, 0);
         const avg = sum / numericVotes.length;
         averageValueSpan.textContent = avg.toFixed(2);
+
+        const max = Math.max(...numericVotes);
+        const min = Math.min(...numericVotes);
+        maxValueSpan.textContent = max;
+        minValueSpan.textContent = min;
+
+        // Calculate Mode
+        const frequencies = {};
+        let maxFreq = 0;
+        numericVotes.forEach(v => {
+            frequencies[v] = (frequencies[v] || 0) + 1;
+            if (frequencies[v] > maxFreq) maxFreq = frequencies[v];
+        });
+        const modes = Object.keys(frequencies).filter(v => frequencies[v] === maxFreq);
+        modeValueSpan.textContent = modes.join(', ');
+
         results.classList.remove('hidden');
     } else {
         results.classList.add('hidden');

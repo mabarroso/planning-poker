@@ -10,7 +10,8 @@ Una aplicación web de Planning Poker para equipos de desarrollo que permite rea
 - **Indicadores de Estado Visuales:** Identificación clara de quién ha votado y quién tiene su voto pendiente mediante etiquetas de estado.
 - **Privacidad en la Votación:** Cada usuario puede ver su propia carta seleccionada, mientras que las de sus compañeros permanecen boca abajo hasta el final.
 - **Revelación Manual:** El moderador decide cuándo revelar las cartas mediante un botón que se habilita una vez que todos han votado.
-- **Cálculo Automático de Media:** Tras la revelación, se calcula la media aritmética de los valores numéricos.
+- **Estadísticas Avanzadas:** Tras la revelación, se calcula automáticamente la media aritmética, el valor máximo, el valor mínimo y la moda (valor más frecuente).
+- **Cálculo Automático de Media:** (Se integra en las estadísticas avanzadas mencionadas arriba).
 
 ## Tecnologías Utilizadas
 
