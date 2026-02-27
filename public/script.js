@@ -3,6 +3,7 @@ const socket = io();
 const loginContainer = document.getElementById('login-container');
 const gameContainer = document.getElementById('game-container');
 const usernameInput = document.getElementById('username');
+const isSpectatorCheckbox = document.getElementById('is-spectator');
 const joinBtn = document.getElementById('join-btn');
 
 const moderatorControls = document.getElementById('moderator-controls');
@@ -23,14 +24,16 @@ const cardsContainer = document.getElementById('cards-container');
 
 let myId = null;
 let isModerator = false;
+let isSpectator = false;
 let currentPhase = 'waiting';
 let currentCards = [];
 let selectedVote = null;
 
 joinBtn.addEventListener('click', () => {
     const username = usernameInput.value.trim();
+    const isSpectator = isSpectatorCheckbox.checked;
     if (username) {
-        socket.emit('join', username);
+        socket.emit('join', username, isSpectator);
         loginContainer.classList.add('hidden');
         gameContainer.classList.remove('hidden');
     }
@@ -69,6 +72,7 @@ socket.on('role', (role) => {
 socket.on('initData', (data) => {
     currentPhase = data.currentPhase;
     currentCards = data.currentCards;
+    isSpectator = data.isSpectator;
     cardConfigInput.value = currentCards.join(', ');
     renderCardPicker();
     updatePhaseUI();
@@ -89,17 +93,20 @@ socket.on('updateUsers', (users) => {
         slot.className = 'player-slot';
         slot.dataset.id = user.id;
         
-        const card = document.createElement('div');
-        card.className = 'card face-down';
-        if (user.hasVoted) {
-            card.classList.add('voted');
-            if (user.id === socket.id && selectedVote) {
-                card.textContent = selectedVote;
-                card.classList.remove('face-down');
-                card.classList.add('face-up');
-            } else {
-                card.textContent = '?';
+        if (!user.isSpectator) {
+            const card = document.createElement('div');
+            card.className = 'card face-down';
+            if (user.hasVoted) {
+                card.classList.add('voted');
+                if (user.id === socket.id && selectedVote) {
+                    card.textContent = selectedVote;
+                    card.classList.remove('face-down');
+                    card.classList.add('face-up');
+                } else {
+                    card.textContent = '?';
+                }
             }
+            slot.appendChild(card);
         }
         
         const name = document.createElement('div');
@@ -108,10 +115,14 @@ socket.on('updateUsers', (users) => {
         if (user.id === socket.id && isModerator) name.textContent += ' [Mod]';
 
         const status = document.createElement('div');
-        status.className = 'player-status ' + (user.hasVoted ? 'status-voted' : 'status-pending');
-        status.textContent = user.hasVoted ? 'Votado' : 'Pendiente';
+        if (user.isSpectator) {
+            status.className = 'player-status spectator-badge';
+            status.textContent = 'Espectador';
+        } else {
+            status.className = 'player-status ' + (user.hasVoted ? 'status-voted' : 'status-pending');
+            status.textContent = user.hasVoted ? 'Votado' : 'Pendiente';
+        }
 
-        slot.appendChild(card);
         slot.appendChild(name);
         slot.appendChild(status);
         table.appendChild(slot);
@@ -152,8 +163,12 @@ function updatePhaseUI() {
         if (isModerator) startBtn.classList.remove('hidden');
     } else if (currentPhase === 'voting') {
         statusMessage.textContent = '¡Votación en curso!';
-        cardPicker.classList.remove('hidden');
-        renderCardPicker();
+        if (isSpectator) {
+            cardPicker.classList.add('hidden');
+        } else {
+            cardPicker.classList.remove('hidden');
+            renderCardPicker();
+        }
         startBtn.classList.add('hidden');
     } else if (currentPhase === 'revealed') {
         statusMessage.textContent = 'Resultados de la votación';

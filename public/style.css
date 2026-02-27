@@ -123,9 +123,18 @@ button:disabled {
     color: #166534;
 }
 
-.status-pending {
-    background-color: #fee2e2;
-    color: #991b1b;
+.spectator-option {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.spectator-badge {
+    background-color: #f1f5f9;
+    color: #475569;
 }
 
 #cards-container {

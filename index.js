@@ -18,8 +18,8 @@ let votes = {}; // { socketId: cardValue }
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
-    socket.on('join', (username) => {
-        const user = { id: socket.id, username };
+    socket.on('join', (username, isSpectator) => {
+        const user = { id: socket.id, username, isSpectator: !!isSpectator };
         users.push(user);
 
         if (!moderatorId) {
@@ -33,7 +33,12 @@ io.on('connection', (socket) => {
         }
 
         io.emit('updateUsers', users.map(u => ({ ...u, hasVoted: !!votes[u.id] })));
-        socket.emit('initData', { currentPhase, currentCards, isModerator: socket.id === moderatorId });
+        socket.emit('initData', { 
+            currentPhase, 
+            currentCards, 
+            isModerator: socket.id === moderatorId,
+            isSpectator: user.isSpectator
+        });
         
         if (currentPhase === 'revealed') {
             socket.emit('reveal', votes);
@@ -57,12 +62,14 @@ io.on('connection', (socket) => {
     });
 
     socket.on('vote', (cardValue) => {
-        if (currentPhase === 'voting') {
+        const user = users.find(u => u.id === socket.id);
+        if (currentPhase === 'voting' && user && !user.isSpectator) {
             votes[socket.id] = cardValue;
             io.emit('updateUsers', users.map(u => ({ ...u, hasVoted: !!votes[u.id] })));
 
-            // Check if everyone has voted
-            if (Object.keys(votes).length === users.length) {
+            // Check if everyone (who is not a spectator) has voted
+            const voters = users.filter(u => !u.isSpectator);
+            if (voters.length > 0 && Object.keys(votes).length === voters.length) {
                 currentPhase = 'revealed';
                 io.emit('reveal', votes);
             }
@@ -92,10 +99,13 @@ io.on('connection', (socket) => {
 
         io.emit('updateUsers', users.map(u => ({ ...u, hasVoted: !!votes[u.id] })));
         
-        // If everyone left has voted in voting phase
-        if (currentPhase === 'voting' && users.length > 0 && Object.keys(votes).length === users.length) {
-            currentPhase = 'revealed';
-            io.emit('reveal', votes);
+        // If everyone left (who is not a spectator) has voted in voting phase
+        if (currentPhase === 'voting') {
+            const voters = users.filter(u => !u.isSpectator);
+            if (voters.length > 0 && Object.keys(votes).length === voters.length) {
+                currentPhase = 'revealed';
+                io.emit('reveal', votes);
+            }
         }
     });
 });
