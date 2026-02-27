@@ -90,7 +90,13 @@ socket.on('updateUsers', (users) => {
         card.className = 'card face-down';
         if (user.hasVoted) {
             card.classList.add('voted');
-            card.textContent = '?';
+            if (user.id === socket.id && selectedVote) {
+                card.textContent = selectedVote;
+                card.classList.remove('face-down');
+                card.classList.add('face-up');
+            } else {
+                card.textContent = '?';
+            }
         }
         
         const name = document.createElement('div');

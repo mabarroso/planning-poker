@@ -2,44 +2,56 @@
 
 Una aplicación web de Planning Poker para equipos de desarrollo que permite realizar estimaciones de tareas en tiempo real de forma sencilla y eficiente.
 
-## Características
+## Características Principales
 
-- **Sincronización en Tiempo Real:** Comunicación fluida entre todos los programadores mediante WebSockets (Socket.io).
-- **Gestión de Moderador:** El primer usuario en conectarse es designado automáticamente como moderador.
-- **Configuración Dinámica:** El moderador puede personalizar los valores de las cartas disponibles.
-- **Interfaz Intuitiva:** Diseño limpio y moderno con visualización de participantes, estados de votación (Votado/Pendiente) y cartas.
-- **Cálculo de Media:** Revelación automática de cartas y cálculo de la media aritmética de los votos numéricos.
+- **Sincronización en Tiempo Real:** Comunicación instantánea entre todos los miembros del equipo mediante WebSockets con Socket.io.
+- **Rol de Moderador:** El primer usuario en unirse toma el control, pudiendo configurar las cartas e iniciar/reiniciar las sesiones de estimación.
+- **Configuración de Cartas Personalizable:** El moderador puede definir el set de valores para las cartas (por defecto: 1, 2, 4, 6, 8, 12, 14, ?, ∞).
+- **Indicadores de Estado Visuales:** Identificación clara de quién ha votado y quién tiene su voto pendiente mediante etiquetas de estado.
+- **Privacidad en la Votación:** Cada usuario puede ver su propia carta seleccionada, mientras que las de sus compañeros permanecen boca abajo hasta el final.
+- **Revelación y Cálculo Automático:** Cuando todos han votado, las cartas se revelan automáticamente y se calcula la media aritmética de los valores numéricos.
 
 ## Tecnologías Utilizadas
 
-- **Backend:** Node.js, Express.
-- **Tiempo Real:** Socket.io.
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla).
+- **Servidor:** Node.js con Express.
+- **Comunicación en Tiempo Real:** Socket.io.
+- **Interfaz de Usuario:** HTML5, CSS3 (Moderno y Responsivo) y JavaScript (Vanilla).
 
-## Requisitos Previos
+## Requisitos
 
-- [Node.js](https://nodejs.org/) (versión 14 o superior recomendada)
-- npm (incluido con Node.js)
+- [Node.js](https://nodejs.org/) (v14 o superior)
+- npm (gestor de paquetes de Node)
 
-## Instalación y Ejecución
+## Instalación y Configuración
 
-1. Clona el repositorio o descarga los archivos.
-2. Abre una terminal en el directorio raíz del proyecto.
-3. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-4. Inicia el servidor:
-   ```bash
-   node index.js
-   ```
-5. Abre tu navegador y accede a `http://localhost:3000`.
+1.  **Clonar el proyecto:**
+    ```bash
+    git clone <url-del-repositorio>
+    cd planning-poker
+    ```
 
-## Instrucciones de Uso
+2.  **Instalar dependencias:**
+    ```bash
+    npm install
+    ```
 
-1. **Unirse:** Introduce tu nombre para entrar a la sala.
-2. **Moderación:** Si eres el primero, verás los controles para configurar las cartas e iniciar la sesión.
-3. **Planificación:** Pulsa "Iniciar Planificación" para que todos los usuarios puedan votar.
-4. **Votación:** Cada programador selecciona una carta. Las cartas permanecen boca abajo hasta que todos hayan votado.
-5. **Revelación:** Una vez completada la votación, las cartas se muestran a todos y se calcula la media automáticamente.
-6. **Reinicio:** El moderador puede reiniciar la sesión para una nueva tarea en cualquier momento.
+3.  **Iniciar la aplicación:**
+    ```bash
+    npm start
+    # o directamente
+    node index.js
+    ```
+
+4.  **Acceder:**
+    Abre tu navegador en `http://localhost:3000`.
+
+## Guía de Uso
+
+1.  **Entrada:** Cada participante introduce su nombre al acceder.
+2.  **Preparación (Moderador):** El moderador ajusta los valores de las cartas si es necesario y pulsa **"Iniciar Planificación"**.
+3.  **Votación:** Los participantes eligen una carta del selector inferior.
+    - Tu carta se mostrará azul (boca arriba) para tu confirmación.
+    - Verás las cartas de los demás en gris con un `?` (boca abajo).
+    - El estado cambiará de **Pendiente** a **Votado**.
+4.  **Resultados:** Al completar los votos, todas las cartas se giran y se muestra el promedio de la estimación.
+5.  **Siguiente Tarea:** El moderador pulsa **"Reiniciar"** para limpiar la mesa y comenzar una nueva estimación.
