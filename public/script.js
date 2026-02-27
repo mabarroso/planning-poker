@@ -9,6 +9,7 @@ const moderatorControls = document.getElementById('moderator-controls');
 const cardConfigInput = document.getElementById('card-config');
 const updateConfigBtn = document.getElementById('update-config-btn');
 const startBtn = document.getElementById('start-btn');
+const revealBtn = document.getElementById('reveal-btn');
 const resetBtn = document.getElementById('reset-btn');
 
 const statusMessage = document.getElementById('status-message');
@@ -46,6 +47,10 @@ startBtn.addEventListener('click', () => {
     socket.emit('startSession');
 });
 
+revealBtn.addEventListener('click', () => {
+    socket.emit('revealCards');
+});
+
 resetBtn.addEventListener('click', () => {
     socket.emit('reset');
 });
@@ -69,6 +74,9 @@ socket.on('initData', (data) => {
     cardConfigInput.value = currentCards.join(', ');
     renderCardPicker();
     updatePhaseUI();
+    if (isModerator && data.canReveal) {
+        revealBtn.disabled = false;
+    }
 });
 
 socket.on('configUpdated', (newCards) => {
@@ -114,6 +122,12 @@ socket.on('updateUsers', (users) => {
         table.appendChild(slot);
     });
     
+    // Auto-enable/disable reveal button for moderator
+    if (isModerator && currentPhase === 'voting') {
+        const everyoneVoted = users.length > 0 && users.every(u => u.hasVoted);
+        revealBtn.disabled = !everyoneVoted;
+    }
+
     if (currentPhase === 'revealed' && lastVotes) {
         renderRevealedCards(lastVotes);
     }
@@ -124,6 +138,7 @@ socket.on('sessionStarted', () => {
     selectedVote = null;
     lastVotes = null;
     results.classList.add('hidden');
+    revealBtn.disabled = true;
     updatePhaseUI();
 });
 
@@ -139,6 +154,7 @@ socket.on('resetSession', () => {
     selectedVote = null;
     lastVotes = null;
     results.classList.add('hidden');
+    revealBtn.disabled = true;
     updatePhaseUI();
 });
 
@@ -146,13 +162,23 @@ function updatePhaseUI() {
     if (currentPhase === 'waiting') {
         statusMessage.textContent = 'Esperando a que el moderador inicie la sesión...';
         cardPicker.classList.add('hidden');
+        revealBtn.classList.add('hidden');
+        if (isModerator) startBtn.classList.remove('hidden');
     } else if (currentPhase === 'voting') {
         statusMessage.textContent = '¡Votación en curso!';
         cardPicker.classList.remove('hidden');
         renderCardPicker();
+        startBtn.classList.add('hidden');
+        if (isModerator) {
+            revealBtn.classList.remove('hidden');
+            // We'll let the moderator button be enabled/disabled via allVoted event
+            // but for safety, initialize based on whether everyone has voted
+        }
     } else if (currentPhase === 'revealed') {
         statusMessage.textContent = 'Resultados de la votación';
         cardPicker.classList.add('hidden');
+        revealBtn.classList.add('hidden');
+        if (isModerator) startBtn.classList.remove('hidden');
     }
 }
 

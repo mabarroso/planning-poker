@@ -25,12 +25,16 @@ io.on('connection', (socket) => {
         if (!moderatorId) {
             moderatorId = socket.id;
             socket.emit('role', 'moderator');
+            // Reset phase and votes when a new moderator starts the session (first user)
+            currentPhase = 'waiting';
+            votes = {};
         } else {
             socket.emit('role', 'voter');
         }
 
         io.emit('updateUsers', users.map(u => ({ ...u, hasVoted: !!votes[u.id] })));
-        socket.emit('initData', { currentPhase, currentCards, isModerator: socket.id === moderatorId });
+        const canReveal = currentPhase === 'voting' && users.length > 0 && Object.keys(votes).length === users.length;
+        socket.emit('initData', { currentPhase, currentCards, isModerator: socket.id === moderatorId, canReveal });
         
         if (currentPhase === 'revealed') {
             socket.emit('reveal', votes);
@@ -60,9 +64,15 @@ io.on('connection', (socket) => {
 
             // Check if everyone has voted
             if (Object.keys(votes).length === users.length) {
-                currentPhase = 'revealed';
-                io.emit('reveal', votes);
+                // Notifying clients via updateUsers is enough
             }
+        }
+    });
+
+    socket.on('revealCards', () => {
+        if (socket.id === moderatorId && currentPhase === 'voting') {
+            currentPhase = 'revealed';
+            io.emit('reveal', votes);
         }
     });
 
@@ -88,12 +98,6 @@ io.on('connection', (socket) => {
         }
 
         io.emit('updateUsers', users.map(u => ({ ...u, hasVoted: !!votes[u.id] })));
-        
-        // If everyone left has voted in voting phase
-        if (currentPhase === 'voting' && users.length > 0 && Object.keys(votes).length === users.length) {
-            currentPhase = 'revealed';
-            io.emit('reveal', votes);
-        }
     });
 });
 
