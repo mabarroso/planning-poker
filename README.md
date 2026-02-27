@@ -9,7 +9,7 @@ Una aplicación web de Planning Poker para equipos de desarrollo que permite rea
 - **Configuración de Cartas Personalizable:** El moderador puede definir el set de valores para las cartas (por defecto: 1, 2, 4, 6, 8, 12, 14, ?, ∞).
 - **Indicadores de Estado Visuales:** Identificación clara de quién ha votado y quién tiene su voto pendiente mediante etiquetas de estado.
 - **Privacidad en la Votación:** Cada usuario puede ver su propia carta seleccionada, mientras que las de sus compañeros permanecen boca abajo hasta el final.
-- **Revelación Manual:** El moderador decide cuándo revelar las cartas mediante un botón que se habilita una vez que todos han votado.
+- **Revelación Automática:** Las cartas se revelan automáticamente para todos los participantes en cuanto el último programador emite su voto.
 - **Estadísticas Avanzadas:** Tras la revelación, se calcula automáticamente la media aritmética, el valor máximo, el valor mínimo y la moda (valor más frecuente).
 - **Cálculo Automático de Media:** (Se integra en las estadísticas avanzadas mencionadas arriba).
 
@@ -55,5 +55,5 @@ Una aplicación web de Planning Poker para equipos de desarrollo que permite rea
     - Tu carta se mostrará azul (boca arriba) para tu confirmación.
     - Verás las cartas de los demás en gris con un `?` (boca abajo).
     - El estado cambiará de **Pendiente** a **Votado**.
-4.  **Resultados:** Cuando todos han votado, se habilitará el botón **"Revelar"** para el moderador. Al pulsarlo, todas las cartas se giran y se muestra el promedio.
+4.  **Resultados:** Cuando todos han votado, las cartas se giran automáticamente para todos y se muestran las estadísticas (media, máximo, mínimo y moda).
 5.  **Siguiente Tarea:** El moderador pulsa **"Reiniciar"** o **"Iniciar Planificación"** para limpiar la mesa y comenzar una nueva estimación.
