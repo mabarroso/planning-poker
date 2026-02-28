@@ -123,6 +123,29 @@ button:disabled {
     color: #166534;
 }
 
+#spectators-wrapper {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+#spectators-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.spectator-item {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 0.4rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 .spectator-option {
     margin-bottom: 1rem;
     display: flex;
@@ -130,11 +153,6 @@ button:disabled {
     justify-content: center;
     gap: 0.5rem;
     font-size: 0.9rem;
-}
-
-.spectator-badge {
-    background-color: #f1f5f9;
-    color: #475569;
 }
 
 #cards-container {

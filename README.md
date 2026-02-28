@@ -6,7 +6,7 @@ Una aplicación web de Planning Poker para equipos de desarrollo que permite rea
 
 - **Sincronización en Tiempo Real:** Comunicación instantánea entre todos los miembros del equipo mediante WebSockets con Socket.io.
 - **Rol de Moderador:** El primer usuario en unirse toma el control, pudiendo configurar las cartas e iniciar/reiniciar las sesiones de estimación.
-- **Rol de Espectador:** Los usuarios pueden elegir entrar como espectadores para observar el proceso y ver los resultados sin participar en la votación.
+- **Rol de Espectador:** Los usuarios pueden elegir entrar como espectadores para observar el proceso y ver los resultados sin participar en la votación. Los espectadores aparecen en un listado separado y no ocupan espacio en la mesa de cartas.
 - **Configuración de Cartas Personalizable:** El moderador puede definir el set de valores para las cartas (por defecto: 1, 2, 4, 6, 8, 12, 14, ?, ∞).
 - **Indicadores de Estado Visuales:** Identificación clara de quién ha votado y quién tiene su voto pendiente mediante etiquetas de estado.
 - **Privacidad en la Votación:** Cada usuario puede ver su propia carta seleccionada, mientras que las de sus compañeros permanecen boca abajo hasta el final.

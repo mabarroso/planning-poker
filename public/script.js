@@ -14,6 +14,8 @@ const resetBtn = document.getElementById('reset-btn');
 
 const statusMessage = document.getElementById('status-message');
 const table = document.getElementById('table');
+const spectatorsWrapper = document.getElementById('spectators-wrapper');
+const spectatorsList = document.getElementById('spectators-list');
 const results = document.getElementById('results');
 const averageValueSpan = document.getElementById('average-value');
 const maxValueSpan = document.getElementById('max-value');
@@ -88,25 +90,28 @@ let lastVotes = null;
 
 socket.on('updateUsers', (users) => {
     table.innerHTML = '';
-    users.forEach(user => {
+    spectatorsList.innerHTML = '';
+    
+    const voters = users.filter(u => !u.isSpectator);
+    const spectators = users.filter(u => u.isSpectator);
+
+    // Render Voters in the table
+    voters.forEach(user => {
         const slot = document.createElement('div');
         slot.className = 'player-slot';
         slot.dataset.id = user.id;
         
-        if (!user.isSpectator) {
-            const card = document.createElement('div');
-            card.className = 'card face-down';
-            if (user.hasVoted) {
-                card.classList.add('voted');
-                if (user.id === socket.id && selectedVote) {
-                    card.textContent = selectedVote;
-                    card.classList.remove('face-down');
-                    card.classList.add('face-up');
-                } else {
-                    card.textContent = '?';
-                }
+        const card = document.createElement('div');
+        card.className = 'card face-down';
+        if (user.hasVoted) {
+            card.classList.add('voted');
+            if (user.id === socket.id && selectedVote) {
+                card.textContent = selectedVote;
+                card.classList.remove('face-down');
+                card.classList.add('face-up');
+            } else {
+                card.textContent = '?';
             }
-            slot.appendChild(card);
         }
         
         const name = document.createElement('div');
@@ -115,18 +120,29 @@ socket.on('updateUsers', (users) => {
         if (user.id === socket.id && isModerator) name.textContent += ' [Mod]';
 
         const status = document.createElement('div');
-        if (user.isSpectator) {
-            status.className = 'player-status spectator-badge';
-            status.textContent = 'Espectador';
-        } else {
-            status.className = 'player-status ' + (user.hasVoted ? 'status-voted' : 'status-pending');
-            status.textContent = user.hasVoted ? 'Votado' : 'Pendiente';
-        }
+        status.className = 'player-status ' + (user.hasVoted ? 'status-voted' : 'status-pending');
+        status.textContent = user.hasVoted ? 'Votado' : 'Pendiente';
 
+        slot.appendChild(card);
         slot.appendChild(name);
         slot.appendChild(status);
         table.appendChild(slot);
     });
+
+    // Render Spectators in separate list
+    spectators.forEach(user => {
+        const specItem = document.createElement('div');
+        specItem.className = 'spectator-item';
+        specItem.textContent = user.username + (user.id === socket.id ? ' (Tú)' : '');
+        if (user.id === socket.id && isModerator) specItem.textContent += ' [Mod]';
+        spectatorsList.appendChild(specItem);
+    });
+
+    if (spectators.length > 0) {
+        spectatorsWrapper.classList.remove('hidden');
+    } else {
+        spectatorsWrapper.classList.add('hidden');
+    }
     
     if (currentPhase === 'revealed' && lastVotes) {
         renderRevealedCards(lastVotes);
