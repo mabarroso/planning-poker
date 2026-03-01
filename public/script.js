@@ -176,7 +176,10 @@ function updatePhaseUI() {
     if (currentPhase === 'waiting') {
         statusMessage.textContent = 'Esperando a que el moderador inicie la sesión...';
         cardPicker.classList.add('hidden');
-        if (isModerator) startBtn.classList.remove('hidden');
+        if (isModerator) {
+            startBtn.classList.remove('hidden');
+            resetBtn.classList.add('hidden');
+        }
     } else if (currentPhase === 'voting') {
         statusMessage.textContent = '¡Votación en curso!';
         if (isSpectator) {
@@ -186,10 +189,14 @@ function updatePhaseUI() {
             renderCardPicker();
         }
         startBtn.classList.add('hidden');
+        if (isModerator) resetBtn.classList.remove('hidden');
     } else if (currentPhase === 'revealed') {
         statusMessage.textContent = 'Resultados de la votación';
         cardPicker.classList.add('hidden');
-        if (isModerator) startBtn.classList.remove('hidden');
+        if (isModerator) {
+            startBtn.classList.remove('hidden');
+            resetBtn.classList.remove('hidden');
+        }
     }
 }
 
