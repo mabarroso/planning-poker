@@ -58,3 +58,4 @@ Una aplicación web de Planning Poker para equipos de desarrollo que permite rea
     - El estado cambiará de **Pendiente** a **Votado**.
 4.  **Resultados:** Cuando todos han votado, las cartas se giran automáticamente para todos y se muestran las estadísticas (media, máximo, mínimo y moda).
 5.  **Siguiente Tarea:** El moderador pulsa **"Reiniciar"** o **"Iniciar Planificación"** para limpiar la mesa y comenzar una nueva estimación.
+
